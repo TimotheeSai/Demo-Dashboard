@@ -1,26 +1,26 @@
+import "./index.css"
+
 class cardObject {
-  constructor({ firstName, lastName, department, contracts, ...data }) {
-    this.firstName = firstName;
-    this.lastName = lastName;
-    this.department = department;
-    [this.mainContract, ...this.otherContracts] = contracts;
-    this.status = this.mainContract.contractStatus;
-    this.incomes = this.mainContract.incomes || 0;
+  constructor({ id, title, category, text, dueAt, tags = [], ...data }) {
+    this.id = id;
+    this.title = title;
+    this.category = category;
+    this.text = text;
+    this.tags = tags;
+    this.dueAt = new Date(dueAt).toLocaleString();
   }
 
   createCardHeaderElt() {
     const cardHeaderContainer = document.createElement("div");
     cardHeaderContainer.classList.add("card__header");
     const nameContainer = document.createElement("div");
-    nameContainer.innerText = `${this.lastName.toUpperCase()} ${
-      this.firstName
-    } (${this.department})`;
+    nameContainer.innerText = this.title;
 
-    const incomeContainer = document.createElement("div");
-    incomeContainer.innerTex = `${this.incomes} €`;
+//    const incomeContainer = document.createElement("div");
+//    incomeContainer.innerTex = `${this.incomes} €`;
 
     cardHeaderContainer.appendChild(nameContainer);
-    cardHeaderContainer.appendChild(incomeContainer);
+//    cardHeaderContainer.appendChild(incomeContainer);
 
     return cardHeaderContainer;
   }
@@ -28,24 +28,29 @@ class cardObject {
   createCardBodyElt() {
     const containerElt = document.createElement("div");
     containerElt.classList.add("card__body");
+    const tagContainerElt = document.createElement("div");
+    tagContainerElt.classList.add("card__body__tags__container");
+
+    this.tags.forEach((c) => {
+      const contractElt = document.createElement("div");
+      contractElt.classList.add("card__body__tag");
+      contractElt.innerText = c.name;
+      tagContainerElt.appendChild(contractElt);
+    });
+
+    containerElt.appendChild(tagContainerElt);
     const mainContractElt = document.createElement("div");
-    mainContractElt.classList.add("card__body__main_contract");
-    mainContractElt.innerText = this.mainContract.providerName;
+    mainContractElt.classList.add("card__body__text");
+    mainContractElt.innerText = this.text;
 
     containerElt.appendChild(mainContractElt);
-    this.otherContracts.forEach((c) => {
-      const contractElt = document.createElement("div");
-      contractElt.classList.add("card__body__other_contract");
-      contractElt.innerText = `${c.providerName} (${c.contractStatusDisplay})`;
-      containerElt.appendChild(contractElt);
-    });
     return containerElt;
   }
 
   createCardFooterElt() {
     const footerElt = document.createElement("div");
     footerElt.classList.add("card__footer");
-    footerElt.innerText = `${this.mainContract.lastUpdate} - ${this.mainContract.responder}`;
+    footerElt.innerText = this.dueAt;
     return footerElt;
   }
 
@@ -61,12 +66,11 @@ class cardObject {
 }
 
 class categoryObject {
-  constructor({ name, incomes, id, cards = [] }) {
-    //    this.cards = cardsData.map((c) => cardObject(c));
+  constructor({ name, slug, id, cards = [] }) {
     this.id = id;
     this.cards = cards;
     this.name = name;
-    //    this.incomes = incomes;
+    this.slug = slug;
   }
 
   get incomes() {
@@ -84,10 +88,10 @@ class categoryObject {
     titleElt.innerText = `${this.name} (${this.cards.length})`;
     containerElt.appendChild(titleElt);
 
-    const subTitleElt = document.createElement("div");
-    subTitleElt.classList.add("category__header__subtitle");
-    subTitleElt.innerText = `${this.incomes} €`;
-    containerElt.appendChild(subTitleElt);
+//    const subTitleElt = document.createElement("div");
+//    subTitleElt.classList.add("category__header__subtitle");
+//    subTitleElt.innerText = `${this.incomes} €`;
+//    containerElt.appendChild(subTitleElt);
 
     return containerElt;
   }
@@ -122,12 +126,10 @@ class dashboardObject {
   constructor({ categoriesData = [], cardsData = [] }) {
     this.cards = cardsData.map((c) => new cardObject(c));
     this.categories = categoriesData.map((c) => {
-      const { slug: catId } = { ...c };
+      const { slug } = { ...c };
       return new categoryObject({
         ...c,
-        cards: this.cards.filter((crd) => crd.status === catId),
-        name: c.display_name,
-        id: c.slug,
+        cards: this.cards.filter((card) => card.category === slug),
       });
     });
   }
@@ -148,6 +150,5 @@ const dashboard = document.querySelector(".board-container");
 //console.log(card)
 //console.log(card.createCardElt().innerHTML)t
 
-export function test() {}
-console.log('=========================')
 
+export { cardObject, categoryObject, dashboardObject }

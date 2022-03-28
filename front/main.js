@@ -1,21 +1,25 @@
 import './style.css'
-import {test} from "./src/components/dashboard"
+import { cardObject, categoryObject, dashboardObject } from "./src/components/dashboard"
+import { fetchData } from "./src/utils"
 
-//document.querySelector('#app').innerHTML = `
-//  <h1>Hello Vite!</h1>
-//  <a href="https://vitejs.dev/guide/features.html" target="_blank">Documentation</a>
-//`
-
-async function fetchData () {
-    const categories = await fetch(
-        "/api/category/backlog/",{
-        headers: {
-            'Accept': 'application/json',
-            'Access-Control-Allow-Origin': '*' 
-        }
-        }).then(r => r.json())
-    
-    console.log(categories)
-    return categories
+async function fetchDashboardData() {
+    const categories = await fetchData("/api/categories/")
+    const cards = await fetchData("/api/cards/")
+    return {
+        ...cards,
+        ...categories
+    }
 }
-console.log(fetchData())
+
+fetchDashboardData().then(res => {
+    console.log("res", res)
+    const dashboard = document.querySelector(".board-container");
+    const dashObj = new dashboardObject({
+        cardsData: res.cards,
+        categoriesData: res.categories
+    })
+    console.log(dashObj)
+    dashObj.categories.forEach(c => {
+        dashboard.appendChild(c.createCategoryElt())
+    })
+})
