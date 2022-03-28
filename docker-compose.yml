@@ -9,16 +9,35 @@ services:
     ports:
       - "5432:5432"
     environment:
+      POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
     volumes:
       - pgdata:/var/lib/postgresql/data
 
-
-  adminer:
-    image: adminer
-    restart: always
+  back:
+    container_name: django
+    build: ./back
+#    command: python manage.py runserver 0.0.0.0:8000 #dev
+    command: gunicorn back.wsgi:application --bind 0.0.0.0:8000 # prod
+    volumes: 
+      - ./back/:/usr/src/app/ #remove for prod
+      - ./statics/:/usr/src/staticfiles/
     ports:
-      - 8080:5444
+      - 8000:8000
+    depends_on:
+      - db
+    env_file:
+      - ./.env
+
+  nginx:
+    image: nginx
+    ports: 
+      - 80:80
+    volumes:
+      - ./nginx/conf/:/etc/nginx/conf.d
+      - ./statics/:/home/app/back/staticfiles/
+    depends_on:
+    - back
 
 volumes: 
    pgdata:
