@@ -1,1 +1,1 @@
-from .meeting import Category, Card
+from .meeting import Category, Card, Tag

@@ -20,6 +20,9 @@ class CategoryListView(ListView):
 class CategoryDetailView(DetailView):
     model = Category
 
+    def get_queryset(self):
+        return super().get_queryset().order_by("order")
+
     def get(self, request, *args, **kwargs):
         self.object = self.get_object()
         return JsonResponse({"ok": True, "category": self.object.serialize()})
@@ -31,7 +34,7 @@ class CardListView(ListView):
     def get(self, request, *args, **kwargs):
         self.object_list = self.get_queryset()
         return JsonResponse(
-            {"ok": True, "categories": [o.serialize() for o in self.object_list]}
+            {"ok": True, "cards": [o.serialize() for o in self.object_list]}
         )
 
 
