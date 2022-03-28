@@ -82,7 +82,8 @@ DATABASES = {
 #         }
         "HOST": "localhost",
         "PORT": 5432,
-        "USER": "boz",
+        "USER": "postgres",
+        "PASSWORD": "postgres",
         "NAME": "meeting",
     }
 }
