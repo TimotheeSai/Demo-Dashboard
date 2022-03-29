@@ -23,6 +23,16 @@ DEBUG = int(os.environ.get("DEBUG", default=0))
 ALLOWED_HOSTS = os.environ.get("DJANGO_ALLOWED_HOSTS").split(" ")
 
 
+CSRF_TRUSTED_ORIGINS = [
+    'http://localhost:8000',
+    'http://localhost:3000',
+]
+    
+CORS_ORIGIN_WHITELIST = [
+    'http://localhost:8000',
+    'http://localhost:3000',
+]
+
 # Application definition
 
 INSTALLED_APPS = [

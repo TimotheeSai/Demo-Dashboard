@@ -1,5 +1,5 @@
 import "./index.css"
-import { fetchData } from "../../utils"
+import { updateCard } from "../../utils"
 
 class cardObject {
   constructor({ id, title, category, text, dueAt, tags = [], ...data }) {
@@ -53,7 +53,7 @@ class cardObject {
   }
 
   dragHandler(ev) {
-    ev.dataTransfer.setData("text/plain", `card-${this.id}`);
+    ev.dataTransfer.setData("text/plain", this.id);
     ev.dataTransfer.dropEffect = "move";
   }
 
@@ -104,14 +104,13 @@ class categoryObject {
     const data = ev.dataTransfer.getData("text/plain")
     console.log(ev, data)
     const dropArea = this.nodeElt.querySelector(".category__body")
-    dropArea.appendChild(document.getElementById(data));
+    dropArea.appendChild(document.getElementById(`card-${data}`));
+    updateCard(data, {category: this.id})
   }
 
   createCategoryBodyElt() {
     const containerElt = document.createElement("div");
     containerElt.classList.add("category__body");
-    containerElt.ondragover = ev => this.dragOverHandler(ev);
-    containerElt.ondrop = ev => this.dropHandler(ev);
     this.cards.forEach((c) => {
       containerElt.appendChild(c.createCardElt());
     });
@@ -128,6 +127,10 @@ class categoryObject {
     const containerElt = document.createElement("div");
     containerElt.classList.add("board__category__container");
     containerElt.setAttribute("id", `category-${this.id}`);
+
+    containerElt.ondragover = ev => this.dragOverHandler(ev);
+    containerElt.ondrop = ev => this.dropHandler(ev);
+
     containerElt.appendChild(this.createCategoryHeaderElt());
     containerElt.appendChild(this.createCategoryBodyElt());
     containerElt.appendChild(this.createCategoryFooterElt());
