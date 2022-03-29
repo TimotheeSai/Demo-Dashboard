@@ -15,6 +15,9 @@ class Category(models.Model):
             "order": self.order,
         }
 
+    def __str__(self):
+        return f"Category - {self.name} - {self.order}"
+
 
 class Tag(models.Model):
     name = CharField(max_length=30)
@@ -24,6 +27,9 @@ class Tag(models.Model):
             "id": self.id,
             "name": self.name,
         }
+
+    def __str__(self):
+        return f"Tag - {self.name}"
 
         
 class Card(models.Model):
@@ -46,4 +52,6 @@ class Card(models.Model):
             "tags": [t.serialize() for t in self.tags.all()]
         }
 
+    def __str__(self):
+        return f"Card - {self.title} - {self.category.name}"
 
