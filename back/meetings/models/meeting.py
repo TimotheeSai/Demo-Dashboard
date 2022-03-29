@@ -4,7 +4,7 @@ from django.db.models.fields import CharField
 
 class Category(models.Model):
     name = models.CharField(max_length=50)
-    slug = models.SlugField()
+    slug = models.SlugField(unique=True)
     order = models.IntegerField(default=0)
 
     def serialize(self):
@@ -34,7 +34,7 @@ class Tag(models.Model):
         
 class Card(models.Model):
     title = models.CharField(max_length=50)
-    slug = models.SlugField()
+    slug = models.SlugField(unique=True)
     category = models.ForeignKey(Category, on_delete=models.SET_NULL, null=True)
     text = models.TextField(blank=True)
 
