@@ -35,7 +35,7 @@ services:
       - 80:80
     volumes:
       - ./nginx/conf/:/etc/nginx/conf.d
-      - ./statics/:/home/app/back/staticfiles/
+      - ./statics/:/usr/src/staticfiles/
     depends_on:
     - back
 
