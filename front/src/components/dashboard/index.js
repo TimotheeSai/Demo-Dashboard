@@ -7,7 +7,8 @@ class cardObject {
     this.category = category;
     this.text = text;
     this.tags = tags;
-    this.dueAt = new Date(dueAt).toLocaleString();
+    this.dueAt = dueAt ? new Date(dueAt) : new Date();
+    this.dueAt = this.dueAt.toLocaleString() 
   }
 
   createCardHeaderElt() {
