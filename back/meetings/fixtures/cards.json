@@ -1,0 +1,48 @@
+[
+{
+    "model": "meetings.card",
+    "pk": 1,
+    "fields": {
+        "title": "Clean python",
+        "slug": "clean_python",
+        "category": 1,
+        "text": "retirer coms",
+        "created_at": "2022-03-29T07:11:07.947Z",
+        "due_at": null,
+        "tags": [
+            1
+        ]
+    }
+},
+{
+    "model": "meetings.card",
+    "pk": 2,
+    "fields": {
+        "title": "Create card",
+        "slug": "create_card",
+        "category": 1,
+        "text": "Creation de nouvelle carte",
+        "created_at": "2022-03-29T07:11:47.526Z",
+        "due_at": null,
+        "tags": [
+            1,
+            2
+        ]
+    }
+},
+{
+    "model": "meetings.card",
+    "pk": 3,
+    "fields": {
+        "title": "Docker",
+        "slug": "docker",
+        "category": 4,
+        "text": "",
+        "created_at": "2022-03-29T07:12:17.506Z",
+        "due_at": null,
+        "tags": [
+            1
+        ]
+    }
+}
+]

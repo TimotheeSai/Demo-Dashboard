@@ -1,0 +1,16 @@
+[
+{
+    "model": "meetings.tag",
+    "pk": 1,
+    "fields": {
+        "name": "Back"
+    }
+},
+{
+    "model": "meetings.tag",
+    "pk": 2,
+    "fields": {
+        "name": "Front"
+    }
+}
+]

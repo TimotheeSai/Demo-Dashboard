@@ -1,0 +1,38 @@
+[
+{
+    "model": "meetings.category",
+    "pk": 1,
+    "fields": {
+        "name": "To Do",
+        "slug": "to_do",
+        "order": 0
+    }
+},
+{
+    "model": "meetings.category",
+    "pk": 2,
+    "fields": {
+        "name": "In progress",
+        "slug": "in_progress",
+        "order": 1
+    }
+},
+{
+    "model": "meetings.category",
+    "pk": 3,
+    "fields": {
+        "name": "On Hold",
+        "slug": "on_hold",
+        "order": 2
+    }
+},
+{
+    "model": "meetings.category",
+    "pk": 4,
+    "fields": {
+        "name": "Done",
+        "slug": "done",
+        "order": 4
+    }
+}
+]
