@@ -124,6 +124,11 @@ a.board__card__link:hover {
 .card__body__text {
     color: #8BAAC0;
     margin: .5rem 0;
+    text-align: initial;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    width: 100%;
+    overflow: hidden;
 }
 
 .card__footer {

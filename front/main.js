@@ -12,13 +12,12 @@ async function fetchDashboardData() {
 }
 
 fetchDashboardData().then(res => {
-    console.log("res", res)
+    console.debug("res", res)
     const dashboard = document.querySelector(".board-container");
     const dashObj = new dashboardObject({
         cardsData: res.cards,
         categoriesData: res.categories
     })
-    console.log(dashObj)
     dashObj.categories.forEach(c => {
         dashboard.appendChild(c.createCategoryElt())
     })

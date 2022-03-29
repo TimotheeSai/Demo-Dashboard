@@ -1,4 +1,5 @@
 import "./index.css"
+import { fetchData } from "../../utils"
 
 class cardObject {
   constructor({ id, title, category, text, dueAt, tags = [], ...data }) {
@@ -8,7 +9,7 @@ class cardObject {
     this.text = text;
     this.tags = tags;
     this.dueAt = dueAt ? new Date(dueAt) : new Date();
-    this.dueAt = this.dueAt.toLocaleString() 
+    this.dueAt = this.dueAt.toLocaleString()
   }
 
   createCardHeaderElt() {
@@ -17,11 +18,7 @@ class cardObject {
     const nameContainer = document.createElement("div");
     nameContainer.innerText = this.title;
 
-//    const incomeContainer = document.createElement("div");
-//    incomeContainer.innerTex = `${this.incomes} €`;
-
     cardHeaderContainer.appendChild(nameContainer);
-//    cardHeaderContainer.appendChild(incomeContainer);
 
     return cardHeaderContainer;
   }
@@ -55,10 +52,17 @@ class cardObject {
     return footerElt;
   }
 
+  dragHandler(ev) {
+    ev.dataTransfer.setData("text/plain", `card-${this.id}`);
+    ev.dataTransfer.dropEffect = "move";
+  }
+
   createCardElt() {
     const containerElt = document.createElement("div");
     containerElt.classList.add("board__card__container");
     containerElt.setAttribute("id", `card-${this.id}`);
+    containerElt.setAttribute("draggable", true);
+    containerElt.ondragstart = (ev) => this.dragHandler(ev);
     containerElt.appendChild(this.createCardHeaderElt());
     containerElt.appendChild(this.createCardBodyElt());
     containerElt.appendChild(this.createCardFooterElt());
@@ -74,10 +78,8 @@ class categoryObject {
     this.slug = slug;
   }
 
-  get incomes() {
-    return this.cards.reduce((a, c) => {
-      return a + c.incomes;
-    }, 0);
+  get nodeElt() {
+    return document.getElementById(`category-${this.id}`)
   }
 
   createCategoryHeaderElt() {
@@ -89,17 +91,27 @@ class categoryObject {
     titleElt.innerText = `${this.name} (${this.cards.length})`;
     containerElt.appendChild(titleElt);
 
-//    const subTitleElt = document.createElement("div");
-//    subTitleElt.classList.add("category__header__subtitle");
-//    subTitleElt.innerText = `${this.incomes} €`;
-//    containerElt.appendChild(subTitleElt);
-
     return containerElt;
+  }
+
+  dragOverHandler(ev) {
+    ev.preventDefault();
+    ev.dataTransfer.dropEffect = "move";
+  }
+
+  dropHandler(ev) {
+//    ev.preventDefault();
+    const data = ev.dataTransfer.getData("text/plain")
+    console.log(ev, data)
+    const dropArea = this.nodeElt.querySelector(".category__body")
+    dropArea.appendChild(document.getElementById(data));
   }
 
   createCategoryBodyElt() {
     const containerElt = document.createElement("div");
     containerElt.classList.add("category__body");
+    containerElt.ondragover = ev => this.dragOverHandler(ev);
+    containerElt.ondrop = ev => this.dropHandler(ev);
     this.cards.forEach((c) => {
       containerElt.appendChild(c.createCardElt());
     });
@@ -135,21 +147,5 @@ class dashboardObject {
     });
   }
 }
-
-const dashboard = document.querySelector(".board-container");
-//cardData.forEach((c) => {
-//  const card = new cardObject(c);
-//  dashboard.appendChild(card.createCardElt());
-//});
-//dash = new dashboardObject({
-//  cardsData: cardData,
-//  categoriesData: contractStatus,
-//});
-//console.log(dash);
-//dash.categories.forEach((c) => dashboard.appendChild(c.createCategoryElt()));
-//card = new cardObject(cardData[0])
-//console.log(card)
-//console.log(card.createCardElt().innerHTML)t
-
 
 export { cardObject, categoryObject, dashboardObject }

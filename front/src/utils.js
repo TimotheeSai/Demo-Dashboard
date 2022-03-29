@@ -1,4 +1,3 @@
-
 async function fetchData (url) {
     const data = await fetch(
         url ,{
@@ -8,7 +7,6 @@ async function fetchData (url) {
         }
         }).then(r => r.json())
     
-    console.log(data)
     return data
 }
 
